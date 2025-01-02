@@ -3,6 +3,7 @@ package com.grazielleanaia.agendadortarefas.controller;
 
 import com.grazielleanaia.agendadortarefas.business.TarefaService;
 import com.grazielleanaia.agendadortarefas.business.dto.TarefasDTO;
+import com.grazielleanaia.agendadortarefas.infrastructure.enums.StatusNotificacaoEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -36,6 +37,24 @@ public class TarefasController {
     @GetMapping
     public ResponseEntity<List<TarefasDTO>> buscaTarefasPorEmail(@RequestHeader("Authorization") String token) {
         return ResponseEntity.ok(tarefaService.buscaTarefasPorEmail(token));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deletaTarefaPorId(@RequestParam("id") String id) {
+        tarefaService.deletaTarefaPorId(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping
+    public ResponseEntity<TarefasDTO> alteraStatusNotificacao(@RequestParam("status") StatusNotificacaoEnum status,
+                                                              @RequestParam("id") String id) {
+        return ResponseEntity.ok(tarefaService.alteraStatus(status, id));
+    }
+
+    @PutMapping
+    public ResponseEntity<TarefasDTO> updateTarefas(@RequestBody TarefasDTO dto,
+                                                    @RequestParam("id") String id) {
+        return ResponseEntity.ok(tarefaService.updateTarefas(dto, id));
     }
 
 }
